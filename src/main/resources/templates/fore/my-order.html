@@ -1,0 +1,535 @@
+﻿<!doctype html>
+<html class="no-js" lang="zxx" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>书店-我的订单</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Favicons -->
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/icon.png">
+
+    <!-- Google font (font-family: 'Roboto', sans-serif; Poppins ; Satisfy) -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,300i,400,400i,500,600,600i,700,700i,800" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/plugins.css">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Cusom css -->
+    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="css/order-style.css">
+    <link rel="stylesheet" href="layui/css/layui.css" media="all">
+   <!-- <script src="js/jquery-3.3.1.js"></script>-->
+    <!-- Modernizer js -->
+    <script src="js/vendor/modernizr-3.5.0.min.js"></script>
+</head>
+<body>
+
+
+<!-- Main wrapper -->
+<div class="wrapper" id="wrapper">
+
+    <!-- Header -->
+    <header id="wn__header" class="oth-page header__area header__absolute sticky__header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-4 col-sm-4 col-7 col-lg-2">
+                    <div class="logo">
+                        <a href="index.html">
+                            <img src="images/logo/logo.png" alt="logo images">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-8 d-none d-lg-block">
+                    <nav class="mainmenu__nav">
+                        <ul class="meninmenu d-flex justify-content-start">
+                            <!--<li class="drop with&#45;&#45;one&#45;&#45;item"><a href="/index">首页</a>
+                            </li>
+                            <li class="drop"><a href="/shop_list">店铺</a>
+                            </li>
+                            <li class="drop"><a href="/book_list">图书</a>
+
+                            </li>
+                            <li class="drop"><a href="/children_books">童书</a>
+
+                            </li>
+                            <li class="drop"><a href="/material">资料</a>
+
+                            </li>
+                            <li class="drop"><a href="/periodical">期刊</a>
+
+                            </li>
+
+                            <li class="drop"><a href="/blog">博客</a>
+
+                            </li>
+                            <li><a href="/contact">联系</a></li>-->
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-md-6 col-sm-6 col-6 col-lg-2">
+                    <ul class="header__sidebar__right d-flex justify-content-end align-items-center">
+                        <li class="shop_search"><a class="search__active" href="#"></a></li>
+                        <li class="wishlist"><a href="/my_collect"></a></li>
+                        <li class="shopcart"><a class="cartbox_active" href="#"><span class="product_qun" th:text="${session.total}">0</span></a>
+                            <!-- Start Shopping Cart -->
+                            <div class="block-minicart minicart__active">
+                                <div class="minicart-content-wrapper">
+                                    <div class="micart__close">
+                                        <span></span>
+                                    </div>
+                                    <div class="items-total d-flex justify-content-between">
+                                        <span>共 <span th:text="${session.total}"></span>件商品</span>
+                                        <span>当前列表总价</span>
+                                    </div>
+                                    <div class="total_amount text-right">
+                                        <span>￥ <span th:text="${session.totalPrice}"></span></span>
+                                    </div>
+                                    <!--<div class="mini_action checkout">
+                                        <a class="checkout__btn" href="cart.html">去购买</a>
+                                    </div>-->
+                                    <div class="single__items">
+                                        <div class="miniproduct">
+
+                                            <div class="item01 d-flex mt--20" th:each="cart:${session.Cart}">
+                                                <div class="thumb">
+                                                    <a th:href="@{/product_detail(id=${cart.productId})}"><img th:src="${cart.images}" alt="product images"></a>
+                                                </div>
+                                                <div class="content">
+                                                    <h6><a href="product-details.html" th:text="${cart.productName}"></a></h6>
+                                                    <span class="prize" >￥ <span th:text="${cart.price}"></span></span>
+                                                    <div class="product_prize d-flex justify-content-between">
+                                                        <span class="qun" th:text="${cart.quantity}"></span>
+                                                        <ul class="d-flex justify-content-end">
+                                                            <li><a href="#"><i class="zmdi zmdi-settings"></i></a></li>
+                                                            <li><a href="#"><i class="zmdi zmdi-delete"></i></a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="mini_action cart">
+                                        <a class="cart__btn" href="/cart_list">查看全部购物车商品</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Shopping Cart -->
+                        </li>
+                        <li class="setting__bar__icon"><a class="setting__active" href="#"></a>
+                            <div class="searchbar__content setting__block">
+                                <div class="content-inner">
+
+                                    <div class="switcher-currency">
+                                        <strong class="label switcher-label">
+                                            <span>我的账户</span>
+                                        </strong>
+                                        <div class="switcher-options">
+                                            <div class="switcher-currency-trigger">
+                                                <div class="setting__menu">
+                                                    <span><a href="/my_info" target="_blank">我的信息</a></span>
+                                                    <span><a href="/cart_list">购物车</a></span>
+                                                    <span><a href="/my_collect">我的收藏</a></span>
+                                                    <span><a href="/my_order">我的订单</a></span>
+                                                    <span><a href="/receiver">管理收货地址</a></span>
+                                                    <span ><a href="/foreLogin" th:if="${session.foreCurrent == null}">登录/注册</a></span>
+                                                    <span ><a href="/logout" th:if="${session.foreCurrent != null}"><span style="color: red">注销</span>：<span th:text="${session.foreCurrent.tel}"></span></a></span>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </header>
+    <!-- //Header -->
+    <!-- Start Search Popup -->
+    <div class="brown--color box-search-content search_active block-bg close__top">
+        <form id="search_mini_form" class="minisearch" action="/search" method="get">
+            <div class="field__search">
+
+                <input type="text" class="product-search" name="search" placeholder="搜索">
+                <div class="action">
+                    <button  class="btn btn-default" type="submit" ><i class="zmdi zmdi-search"></i></button>
+
+                </div>
+
+            </div>
+        </form>
+        <div class="close__wrap">
+            <!--<span>关闭</span>-->
+        </div>
+    </div>
+    <!-- End Search Popup -->
+    <!-- Start Bradcaump area -->
+    <div class="ht__bradcaump__area bg-image--3">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="bradcaump__inner text-center">
+                        <h2 class="bradcaump-title">我的订单</h2>
+                        <nav class="bradcaump-content">
+                            <a class="breadcrumb_item" href="index.html">首页</a>
+                            <span class="brd-separetor">/</span>
+                            <span class="breadcrumb_item active">订单详情 </span>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Bradcaump area -->
+    <!-- cart-main-area start -->
+    <div class="cart-main-area section-padding--lg bg--white">
+        <div class="container">
+
+            <div id="big">
+
+                <div id="bigRight">
+
+
+                    <div class="allBig" >
+                        <div class="allOrder">
+                            <ul class="allOrderTop">
+                                <li>
+                                    <ol>
+                                        <li>全部订单</li>
+                                        <li>已完成</li>
+                                        <li>已取消</li>
+                                        <li>待付款</li>
+                                        <li>待收货</li>
+                                        <li>待评价</li>
+                                        <div style="clear:both;"></div>
+                                    </ol>
+                                </li>
+
+                                <li class="allOrderTopLastLi">
+
+                                    <div>
+                                        <input type="text" placeholder="商品名称/商品编号/订单号">
+                                        <button class="search"></button>
+
+                                    </div>
+                                </li>
+                                <div class="clear:both;"></div>
+                            </ul>
+
+                        </div>
+                        <div class="details">
+                            <ul class="detailsUl">
+                                <div class="detailsUlDiv">
+                                    <li class="detailsLiok detailsLi">时   间<i class="allBig_i"></i>
+                                        <ol>
+                                            <li>近三个月订单</li>
+                                            <li>今年内订单</li>
+                                            <li>2016年订单</li>
+                                            <li>2015年订单</li>
+                                            <li>2014年订单</li>
+                                            <li>2014年以前订单</li>
+                                        </ol>
+                                    </li>
+                                    <li class="detailsLi">订单详情</li>
+                                    <div style="clear:both;"></div>
+                                </div>
+
+                                <li class="detailsLi1" style="margin-left: 5px">收货人信息</li>
+                                <li class="detailsLi1">金额</li>
+                                <li class="detailsLi1 detailsLiok">全部状态<i class="allBig_i"></i>
+                                    <ol>
+                                        <li>全部状态</li>
+                                        <li>等待付款</li>
+                                        <li>等待收货</li>
+                                        <li>已完成</li>
+                                        <li>已取消</li>
+                                    </ol>
+                                </li>
+                                <li class="detailsLi1">操作</li>
+                                <div style="clear:both;"></div>
+                            </ul>
+                        </div>
+                        <div th:each="product:${Product}">
+                            <table class="table">
+                                <tr>
+                                    <td colspan="7" style="background:#F7F7F7">
+                                        <span style="color:#000000" th:text="${product.date}">2020-12-09 20:50:10</span>
+                                        <span><ruby style="color:#000000">订单号:</ruby> <span  th:text="${product.orderNo}">70207298274</span></span>
+                                        <span>在线书城官方旗舰店<i class="table_i"></i></span>
+
+                                        <i class="table_i5 isShow"></i>
+                                    </td>
+                                </tr>
+                                <tr class="tr"  >
+                                    <td colspan="1" >
+                                       <table th:each="pVo:${product.orderItemVoList}" style="border-bottom: 0;border-top: 1px solid silver">
+                                           <tr>
+                                               <td><img th:src="${pVo.productImage}" style="width: 70px;height: 70px;" alt="" class="img">
+                                                   <div>
+                                                       <p th:text="${pVo.productName}"></p>
+                                                       <div>￥<span th:text="${pVo.totalPrice}"></span></div>
+                                                       <!--<div><i class="table_i4"></i>找搭配</div>-->
+                                                   </div>
+                                                   <div style="margin-left:15px;" >x <span th:text="${pVo.quantity}"></span></div>
+
+                                               </td>
+                                           </tr>
+                                       </table>
+
+
+                                    </td>
+                                    <td ><!--收货人信息-->
+                                        <i><i class="table_i1"></i></i>
+                                        <div>
+                                            <span th:text="${product.address.receiver}"></span>
+                                            <span th:text="${product.address.tel}"></span>
+                                            <span th:text="${product.address.detail}"></span>
+                                            <span th:text="${product.address.postalcode}"></span>
+                                        </div>
+                                    </td>
+                                    <td style="padding-left:10px;color:#AAAAB1;">
+                                        <p style="margin-bottom:5px;color: black">总额 ￥ <span style="color: red;" th:text="${product.productTotalPrice}"></span></p>
+                                        <hr style="width:90%;">
+                                        <p>在线支付</p>
+                                    </td>
+                                    <td>
+                                        <ul>
+                                            <li style="color:#71B247;" th:text="${product.orderStatus}">等待收货</li>
+
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <p><input type="button" onclick="enterGoods(this.name)"  th:attr="name=${product.orderNo}" value="确认收货"></p>
+                                        <p style="margin:4px 0; "><input type="button"  onclick="cancelOrder(this.name)" th:attr="name=${product.orderNo}" value="取消订单"></p>
+                                        <p><input type="button" onclick="refund(this.name)"  th:attr="name=${product.orderNo}" value="申请退款"></p>
+                                        <p><input type="button" onclick="returnGoods(this.name)"  th:attr="name=${product.orderNo}" value="申请退货"></p>
+                                        <p><input type="button" onclick="deleteOrder(this.name)" th:attr="name=${product.orderNo}" value="删除"></p>
+                                        <p><input type="button" onclick="comment(this.name)"    th:attr="name=${product.orderNo}" value="评价"></p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+
+
+
+
+                        <div class="order_btm">
+                            <div>
+                                <span th:text="'共 '+ ${PageInfo.pages}+ ' 页'"></span>
+                                <a th:href="@{/my_order(page= 1 )}">首页</a>
+                                <a th:if="${PageInfo.hasPreviousPage} == true" th:href="@{/my_order(page=${PageInfo.prePage})}">上一页</a>
+                                <span th:text="${PageInfo.pageNum}">1</span>
+                                <a th:if="${PageInfo.hasNextPage} == true" th:href="@{/my_order(page=${PageInfo.nextPage})}" >下一页</a>
+                                <a  th:if="${PageInfo.hasNextPage} == true" th:href="@{/my_order(page=${PageInfo.navigateLastPage})}" >尾页</a>
+                            </div>
+                        </div>
+                        <div style="clear:both;"></div>
+                    </div>
+
+                </div>
+                <div style="clear:both;"></div>
+            </div>
+        </div>
+    </div>
+    <!-- cart-main-area end -->
+    <!-- Footer Area -->
+    <footer id="wn__footer" class="footer__area bg__cat--8 brown--color">
+        <div class="footer-static-top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="footer__widget footer__menu">
+                            <div class="ft__logo">
+                                <a href="index.html">
+                                    <img src="images/logo/3.png" alt="logo">
+                                </a>
+                                <!--<p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered duskam alteration variations of passages</p>-->
+                            </div>
+                            <div class="footer__content">
+                                <ul class="social__net social__net--2 d-flex justify-content-center">
+                                    <li><a href="#"><i class="bi bi-facebook"></i></a></li>
+                                    <li><a href="#"><i class="bi bi-google"></i></a></li>
+                                    <li><a href="#"><i class="bi bi-twitter"></i></a></li>
+                                    <li><a href="#"><i class="bi bi-linkedin"></i></a></li>
+                                    <li><a href="#"><i class="bi bi-youtube"></i></a></li>
+                                </ul>
+                                <ul class="mainmenu d-flex justify-content-center">
+                                    <li><a href="">博客</a></li>
+                                    <li><a href="">加入我们</a></li>
+                                    <li><a href="">订阅</a></li>
+                                    <li><a href="">邮件</a></li>
+                                    <li><a href="">联系</a></li>
+                                    <li><a href="">关于</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="copyright__wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="copyright">
+                            <div class="copy__right__inner text-left">
+                                <p>Copyright <i class="fa fa-copyright"></i> <a href="" title="bootstrapmb">haixia.com</a> All Rights Reserved</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="payment text-right">
+                            <img src="images/icons/payment.png" alt="" />
+                        </div>
+                    </div>-->
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- //Footer Area -->
+
+</div>
+<!-- //Main wrapper -->
+
+<!-- JS Files -->
+<script src="js/vendor/jquery-3.2.1.min.js"></script>
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/plugins.js"></script>
+<script src="js/active.js"></script>
+<script src="layui/layui.js" charset="utf-8"></script>
+<script src="js/menu.js"></script>
+<script type="text/javascript">
+    function cancelOrder(orderNo) {
+        if (window.confirm('你确定要取消吗？')) {
+            $.ajax({
+                url:"fore/order/cancel_order?orderNo="+orderNo,
+                type:"get",
+                success:function (data) {
+                    alert(data.msg)
+                    window.location.reload()
+                }
+            })
+        } else {
+
+        }
+
+    }
+    function enterGoods(orderNo) {
+        if (window.confirm('你确定要收货吗？')) {
+            $.ajax({
+                url:"fore/order/get_goods?orderNo="+orderNo,
+                type:"get",
+                success:function (data) {
+                    alert(data.msg)
+                    window.location.reload()
+                }
+            })
+        } else {
+
+        }
+    }
+    function deleteOrder(orderNo) {
+        if (window.confirm('你确定要删除订单吗？')) {
+            $.ajax({
+                url:"fore/order/del_order?orderNo="+orderNo,
+                type:"get",
+                success:function (data) {
+                    alert(data.msg)
+                    window.location.reload()
+                }
+            })
+        } else {
+
+        }
+    }
+    function refund(orderNo) {
+        if (window.confirm('你确定要申请退款吗？')) {
+            $.ajax({
+                url:"fore/order/refund?orderNo="+orderNo,
+                type:"get",
+                success:function (data) {
+                    alert(data.msg)
+                    window.location.reload()
+                }
+            })
+        } else {
+
+        }
+    }
+    function returnGoods(orderNo) {
+        if (window.confirm('你确定要申请退货吗？')) {
+            $.ajax({
+                url:"fore/order/return_goods?orderNo="+orderNo,
+                type:"get",
+                success:function (data) {
+                    alert(data.msg)
+                    window.location.reload()
+                }
+            })
+        } else {
+
+        }
+    }
+    function comment(orderNo) {
+        console.log(orderNo)
+        layui.use(['table', 'element', 'layer', 'jquery', 'form'], function () {
+            //var $ = layui.jquery
+            var element = layui.element
+            var layer = layui.layer
+            var form = layui.form;
+            var table = layui.table;
+            //头工具栏事件
+            layer.open({
+                type: 1
+                ,title:"评论"
+               ,skin: 'layui-layer-rim', //加上边框
+                area: ['420px', '240px'], //宽高
+                content: '<textarea style="width: 100%;"maxlength="100" rows="8" placeholder="输入小于100字"></textarea>'
+                ,btn: ['发表', '取消'],
+                yes: function (index, layero) {
+                    console.log($("textarea").val())
+                   $.ajax({
+                       url:"/fore/comment/add_comment",
+                       type:"post",
+                       data:{
+                           "orderNo":orderNo,
+                           "detail":$("textarea").val()
+                       },
+                       success:function (data) {
+                           if(data.msg === "SUCCESS"){
+                               layer.msg("发布成功", {icon: 6});
+                               layer.close(index)
+                               window.location.reload()
+                           }else {
+                               layer.msg(data.msg, {icon: 5});
+                           }
+
+                       }
+                   })
+                },
+                btn1: function (index, layero) {
+                    layer.close(index)
+                },
+            });
+
+            //监听行工具事件
+
+        });
+
+    }
+</script>
+</body>
+</html>

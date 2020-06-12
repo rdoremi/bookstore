@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>后台管理</title>
+    <base href="/">
+    <link rel="stylesheet" type="text/css" href="admin/css/login.css">
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <style>
+        #v_container{
+            width: 100px;
+            height: 40px;
+        }
+
+    </style>
+</head>
+<body>
+<!--<p class="center">登录用户名为：admin，密码为admin</p>
+<p class="center">在用户名和密码错误时，点击登录按钮可以看到表单的摇晃效果。</p>-->
+<div id="wrapper" class="login-page">
+    <div id="login_form" class="form">
+        <form class="register-form">
+            <input type="text" placeholder="手机号" name="tel" id="r_user_name"/>
+            <input type="password" placeholder="密码" name="password" id="r_password"/>
+            <input type="text" placeholder="电子邮件" name="email" id="r_emial"/>
+            <button id="create">创建账户</button>
+            <p class="message">已经有了一个账户? <a href="#">立刻登录</a></p>
+        </form>
+        <form class="login-form">
+            <h2>管理登录</h2>
+            <input type="text" placeholder="手机号" name="tel" id="user_name"/>
+            <input type="password" placeholder="密码" name="password" id="password"/>
+            <div>
+                <div id="v_container"></div>
+                <input type="text" id="code_input"  placeholder="请输入验证码"/><!--<button id="my_button">验证</button>-->
+            </div>
+            <a class="layui-btn" id="my_button">登　录</a>
+            <p class="message">还没有账户? <a href="#">立刻创建</a></p>
+        </form>
+    </div>
+</div>
+<script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+<script src="js/gVerify.js"></script>
+<script type="text/javascript">
+    var verifyCode = new GVerify("v_container");
+
+    document.getElementById("my_button").onclick = function(){
+        var res = verifyCode.validate(document.getElementById("code_input").value);
+        if(res){
+            var tel = $("#user_name").val();
+            var password = $("#password").val();
+            $.ajax({
+                url: "/admin/user/login",
+                type: "post",
+                dataType: "json",
+                data: {
+                    "tel": tel,
+                    "password": password
+                },
+                success: function (data) {
+                    if (data.msg === "SUCCESS") {
+                        $("#user_name").val("");
+                        $("#password").val("");
+                        //$(location).attr('href', '/admin/page/index');
+                        window.location.href="/admin/page/index"
+                    }
+                    else {
+                        alert(data.msg)
+                        $("#login_form").removeClass('shake_effect');
+                        setTimeout(function () {
+                            $("#login_form").addClass('shake_effect')
+                        }, 1);
+                    }
+                }
+            })
+        }else{
+            $("#code_input").val("")
+            alert("验证码错误");
+        }
+    }
+
+
+    /*function check_login() {
+        var tel = $("#user_name").val();
+        var password = $("#password").val();
+        $.ajax({
+            url: "/admin/user/login",
+            type: "post",
+            dataType: "json",
+            data: {
+                "tel": tel,
+                "password": password
+            },
+            success: function (data) {
+                if (data.msg === "SUCCESS") {
+                    $("#user_name").val("");
+                    $("#password").val("");
+                    //$(location).attr('href', '/admin/page/index');
+                    window.location.href="/admin/page/index"
+                }
+                else {
+                    alert(data.msg)
+                    $("#login_form").removeClass('shake_effect');
+                    setTimeout(function () {
+                        $("#login_form").addClass('shake_effect')
+                    }, 1);
+                }
+            }
+        })
+
+    }
+
+    function check_register() {
+        var name = $("#r_user_name").val();
+        var pass = $("#r_password").val();
+        var email = $("r_email").val();
+        if (name != "" && pass == "" && email != "") {
+            alert("注册成功！");
+            $("#user_name").val("");
+            $("#password").val("");
+        }
+        else {
+            $("#login_form").removeClass('shake_effect');
+            setTimeout(function () {
+                $("#login_form").addClass('shake_effect')
+            }, 1);
+        }
+    }
+
+    $(function () {
+        $("#create").click(function () {
+            check_register();
+            return false;
+        })
+        /!*$("#login").click(function () {
+            check_login();
+            return false;
+        })*!/
+        $('.message a').click(function () {
+            $('form').animate({
+                height: 'toggle',
+                opacity: 'toggle'
+            }, 'slow');
+        });
+    })
+
+    var verifyCode = new GVerify("v_container");
+
+    document.getElementById("my_button").onclick = function(){
+        var res = verifyCode.validate(document.getElementById("code_input").value);
+        if(res){
+            check_login();
+        }else{
+            alert("验证码错误");
+        }
+    }*/
+</script>
+</body>
+</html>

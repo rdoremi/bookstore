@@ -1,0 +1,530 @@
+﻿<!doctype html>
+<html class="no-js" lang="zxx" xmlns:th="http://thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<title>书店-联系</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- Favicons -->
+	<link rel="shortcut icon" href="images/favicon.ico">
+	<link rel="apple-touch-icon" href="images/icon.png">
+
+	<!-- Google font (font-family: 'Roboto', sans-serif; Poppins ; Satisfy) -->
+	<link href="https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i,700,700i,900" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Poppins:300,300i,400,400i,500,600,600i,700,700i,800" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Satisfy" rel="stylesheet">
+
+	<!-- Stylesheets -->
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/plugins.css">
+	<link rel="stylesheet" href="style.css">
+
+	<!-- Cusom css -->
+   <link rel="stylesheet" href="css/custom.css">
+
+	<!-- Modernizer js -->
+	<script src="js/vendor/modernizr-3.5.0.min.js"></script>
+</head>
+<body>
+
+
+	<!-- Main wrapper -->
+	<div class="wrapper" id="wrapper">
+		
+		<!-- Header -->
+		<header id="wn__header" class="oth-page header__area header__absolute sticky__header">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-md-4 col-sm-4 col-7 col-lg-2">
+						<div class="logo">
+							<a href="index.html">
+								<img src="images/logo/logo.png" alt="logo images">
+							</a>
+						</div>
+					</div>
+					<div class="col-lg-8 d-none d-lg-block">
+						<nav class="mainmenu__nav">
+							<ul class="meninmenu d-flex justify-content-start">
+								<!--<li class="drop with&#45;&#45;one&#45;&#45;item"><a href="/index">首页</a>
+								</li>
+								<li class="drop"><a href="/shop_list">店铺</a>
+								</li>
+								<li class="drop"><a href="/book_list">图书</a>
+
+								</li>
+								<li class="drop"><a href="/children_books">童书</a>
+
+								</li>
+								<li class="drop"><a href="/material">资料</a>
+
+								</li>
+								<li class="drop"><a href="/periodical">期刊</a>
+
+								</li>
+
+								<li class="drop"><a href="/blog">博客</a>
+
+								</li>
+								<li><a href="/contact">联系</a></li>-->
+							</ul>
+						</nav>
+					</div>
+					<div class="col-md-6 col-sm-6 col-6 col-lg-2">
+						<ul class="header__sidebar__right d-flex justify-content-end align-items-center">
+							<li class="shop_search"><a class="search__active" href="#"></a></li>
+							<li class="wishlist"><a href="/my_collect"></a></li>
+							<li class="shopcart"><a class="cartbox_active" href="#"><span class="product_qun" th:text="${session.total}">0</span></a>
+								<!-- Start Shopping Cart -->
+								<div class="block-minicart minicart__active">
+									<div class="minicart-content-wrapper">
+										<div class="micart__close">
+											<span></span>
+										</div>
+										<div class="items-total d-flex justify-content-between">
+											<span>共 <span th:text="${session.total}"></span>件商品</span>
+											<span>当前列表总价</span>
+										</div>
+										<div class="total_amount text-right">
+											<span>￥ <span th:text="${session.totalPrice}"></span></span>
+										</div>
+										<!--<div class="mini_action checkout">
+											<a class="checkout__btn" href="cart.html">去购买</a>
+										</div>-->
+										<div class="single__items">
+											<div class="miniproduct">
+
+												<div class="item01 d-flex mt--20" th:each="cart:${session.Cart}">
+													<div class="thumb">
+														<a th:href="@{/product_detail(id=${cart.productId})}"><img th:src="${cart.images}" alt="product images"></a>
+													</div>
+													<div class="content">
+														<h6><a href="product-details.html" th:text="${cart.productName}"></a></h6>
+														<span class="prize" >￥ <span th:text="${cart.price}"></span></span>
+														<div class="product_prize d-flex justify-content-between">
+															<span class="qun" th:text="${cart.quantity}"></span>
+															<ul class="d-flex justify-content-end">
+																<li><a href="#"><i class="zmdi zmdi-settings"></i></a></li>
+																<li><a href="#"><i class="zmdi zmdi-delete"></i></a></li>
+															</ul>
+														</div>
+													</div>
+												</div>
+
+											</div>
+										</div>
+										<div class="mini_action cart">
+											<a class="cart__btn" href="/cart_list">查看全部购物车商品</a>
+										</div>
+									</div>
+								</div>
+								<!-- End Shopping Cart -->
+							</li>
+							<li class="setting__bar__icon"><a class="setting__active" href="#"></a>
+								<div class="searchbar__content setting__block">
+									<div class="content-inner">
+
+										<div class="switcher-currency">
+											<strong class="label switcher-label">
+												<span>我的账户</span>
+											</strong>
+											<div class="switcher-options">
+												<div class="switcher-currency-trigger">
+													<div class="setting__menu">
+														<span><a href="/my_info" target="_blank">我的信息</a></span>
+														<span><a href="/cart_list">购物车</a></span>
+														<span><a href="/my_collect">我的收藏</a></span>
+														<span><a href="/my_order">我的订单</a></span>
+														<span><a href="/receiver">管理收货地址</a></span>
+														<span ><a href="/foreLogin" th:if="${session.foreCurrent == null}">登录/注册</a></span>
+														<span ><a href="/logout" th:if="${session.foreCurrent != null}"><span style="color: red">注销</span>：<span th:text="${session.foreCurrent.tel}"></span></a></span>
+
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<!-- Start Mobile Menu -->
+				<div class="row d-none">
+					<div class="col-lg-12 d-none">
+						<nav class="mobilemenu__nav">
+							<ul class="meninmenu">
+								<li><a href="index.html">Home</a>
+									<ul>
+										<li><a href="index.html">Home Style Default</a></li>
+										<li><a href="index-2.html">Home Style Two</a></li>
+										<li><a href="index-box.html">Home Box Style</a></li>
+									</ul>
+								</li>
+								<li><a href="#">Pages</a>
+									<ul>
+										<li><a href="about.html">About Page</a></li>
+										<li><a href="portfolio.html">Portfolio</a>
+											<ul>
+												<li><a href="portfolio.html">Portfolio</a></li>
+												<li><a href="portfolio-three-column.html">Portfolio 3 Column</a></li>
+												<li><a href="portfolio-details.html">Portfolio Details</a></li>
+											</ul>
+										</li>
+										<li><a href="login.html">My Account</a></li>
+										<li><a href="cart.html">Cart Page</a></li>
+										<li><a href="checkout.html">Checkout Page</a></li>
+										<li><a href="wishlist.html">Wishlist Page</a></li>
+										<li><a href="error404.html">404 Page</a></li>
+										<li><a href="faq.html">Faq Page</a></li>
+										<li><a href="team.html">Team Page</a></li>
+									</ul>
+								</li>
+								<li><a href="shop-grid.html">Shop</a>
+									<ul>
+										<li><a href="shop-grid.html">Shop Grid</a></li>
+										<li><a href="shop-list.html">Shop List</a></li>
+										<li><a href="shop-left-sidebar.html">Shop Left Sidebar</a></li>
+										<li><a href="shop-right-sidebar.html">Shop Right Sidebar</a></li>
+										<li><a href="shop-no-sidebar.html">Shop No sidebar</a></li>
+										<li><a href="single-product.html">Single Product</a></li>
+									</ul>
+								</li>
+								<li><a href="blog.html">Blog</a>
+									<ul>
+										<li><a href="blog.html">Blog Page</a></li>
+										<li><a href="blog-left-sidebar.html">Blog Left Sidebar</a></li>
+										<li><a href="blog-no-sidebar.html">Blog No Sidebar</a></li>
+										<li><a href="blog-details.html">Blog Details</a></li>
+									</ul>
+								</li>
+								<li><a href="contact.html">Contact</a></li>
+							</ul>
+						</nav>
+					</div>
+				</div>
+				<!-- End Mobile Menu -->
+				<div class="mobile-menu d-block d-lg-none">
+				</div>
+				<!-- Mobile Menu -->
+			</div>
+		</header>
+		<!-- //Header -->
+		<!-- Start Search Popup -->
+		<div class="brown--color box-search-content search_active block-bg close__top">
+			<form id="search_mini_form" class="minisearch" action="/search" method="get">
+				<div class="field__search">
+
+					<input type="text" class="product-search" name="search" placeholder="搜索">
+					<div class="action">
+						<button  class="btn btn-default" type="submit" ><i class="zmdi zmdi-search"></i></button>
+
+					</div>
+
+				</div>
+			</form>
+			<div class="close__wrap">
+				<!--<span>关闭</span>-->
+			</div>
+		</div>
+		<!-- End Search Popup -->
+        <!-- Start Bradcaump area -->
+        <div class="ht__bradcaump__area bg-image--6">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="bradcaump__inner text-center">
+                        	<h2 class="bradcaump-title">联系我们</h2>
+                            <nav class="bradcaump-content">
+                              <a class="breadcrumb_item" href="index.html">首页</a>
+                              <span class="brd-separetor">/</span>
+                              <span class="breadcrumb_item active">联系</span>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Bradcaump area -->
+        <!-- Start Contact Area -->
+        <section class="wn_contact_area bg--white pt--80">
+        	<div class="container">
+        		<div class="row">
+        			<div class="col-lg-8 col-12">
+        				<div class="contact-form-wrap">
+        					<h2 class="contact__title">联系我们</h2>
+        					<p>若图书有问题或者想跟我们合作，请填写以下信息 </p>
+                            <form id="contact-form" action="mail.php" >
+                                <div class="single-contact-form space-between">
+                                    <input type="text" name="name" placeholder="姓名*">
+                                    <input type="text" name="sex" placeholder="性别*">
+                                </div>
+                                <div class="single-contact-form space-between">
+									<input type="text" name="tel" placeholder="电话*">
+									<input type="email" name="email" placeholder="邮件*">
+                                </div>
+                                <div class="single-contact-form">
+                                    <input type="text" name="address" placeholder="地址*">
+                                </div>
+                                <div class="single-contact-form message">
+                                    <textarea name="detail" placeholder="在此填写你想说的话.."></textarea>
+                                </div>
+                                <div class="contact-btn">
+                                    <a class="sub-btn" onclick="subMessage()">提交</a>
+                                </div>
+                            </form>
+                        </div> 
+                        <div class="form-output">
+                            <p class="form-messege">
+                        </div>
+        			</div>
+        			<div class="col-lg-4 col-12 md-mt-40 sm-mt-40">
+        				<div class="wn__address">
+        					<h2 class="contact__title">公司信息.</h2>
+        					<p>介绍。。。。。。。。。。。。。。。。。。。。。。。。。。。。 </p>
+        					<div class="wn__addres__wreapper">
+
+        						<div class="single__address">
+        							<i class="icon-location-pin icons"></i>
+        							<div class="content">
+        								<span>地址:</span>
+        								<p>贵州省遵义市红花岗区乌江大道3号</p>
+        							</div>
+        						</div>
+
+        						<div class="single__address">
+        							<i class="icon-phone icons"></i>
+        							<div class="content">
+        								<span>电话:</span>
+        								<p>716-298-1822</p>
+        							</div>
+        						</div>
+
+        						<div class="single__address">
+        							<i class="icon-envelope icons"></i>
+        							<div class="content">
+        								<span>邮箱:</span>
+        								<p>43243253546@163.com</p>
+        							</div>
+        						</div>
+
+        						<div class="single__address">
+        							<i class="icon-globe icons"></i>
+        							<div class="content">
+        								<span>微信公众号</span>
+        								<p>7162981822</p>
+        							</div>
+        						</div>
+
+        					</div>
+        				</div>
+        			</div>
+        		</div>
+        	</div>
+        	<div class="google__map mt--80">
+        		<div id="googleMap"></div>
+        	</div>
+        </section>
+
+		<footer id="wn__footer" class="footer__area bg__cat--8 brown--color">
+			<div class="footer-static-top">
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="footer__widget footer__menu">
+								<div class="ft__logo">
+									<a href="index.html">
+										<img src="images/logo/3.png" alt="logo">
+									</a>
+									<!--<p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered duskam alteration variations of passages</p>-->
+								</div>
+								<div class="footer__content">
+									<ul class="social__net social__net--2 d-flex justify-content-center">
+										<li><a href="#"><i class="bi bi-facebook"></i></a></li>
+										<li><a href="#"><i class="bi bi-google"></i></a></li>
+										<li><a href="#"><i class="bi bi-twitter"></i></a></li>
+										<li><a href="#"><i class="bi bi-linkedin"></i></a></li>
+										<li><a href="#"><i class="bi bi-youtube"></i></a></li>
+									</ul>
+									<ul class="mainmenu d-flex justify-content-center">
+										<li><a href="">博客</a></li>
+										<li><a href="">加入我们</a></li>
+										<li><a href="">订阅</a></li>
+										<li><a href="">邮件</a></li>
+										<li><a href="">联系</a></li>
+										<li><a href="">关于</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="copyright__wrapper">
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-6 col-md-6 col-sm-12">
+							<div class="copyright">
+								<div class="copy__right__inner text-left">
+									<p>Copyright <i class="fa fa-copyright"></i> <a href="" title="bootstrapmb">haixia.com</a> All Rights Reserved</p>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</footer>
+		<!-- //Footer Area -->
+
+	</div>
+	<!-- //Main wrapper -->
+
+	<!-- JS Files -->
+	<script src="js/vendor/jquery-3.2.1.min.js"></script>
+	<script src="js/popper.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/plugins.js"></script>
+	<script src="js/menu.js"></script>
+	    <!-- Google Map js -->
+	    <script src="http://ditu.google.cn/maps/api/js?key=AIzaSyBmGmeot5jcjdaJTvfCmQPfzeoG_pABeWo"></script>
+	    <script>
+ 
+	        google.maps.event.addDomListener(window, 'load', init);
+
+	        function init() {
+	             var mapOptions = {
+ 
+	                zoom: 12,
+
+	                scrollwheel: false,
+
+	            
+	                center: new google.maps.LatLng(23.7286, 90.3854),  
+ 
+	                 styles:
+					[
+
+					    {
+					        "featureType": "administrative",
+					        "elementType": "labels.text.fill",
+					        "stylers": [
+					            {
+					                "color": "#444444"
+					            }
+					        ]
+					    },
+					    {
+					        "featureType": "landscape",
+					        "elementType": "all",
+					        "stylers": [
+					            {
+					                "color": "#f2f2f2"
+					            }
+					        ]
+					    },
+					    {
+					        "featureType": "poi",
+					        "elementType": "all",
+					        "stylers": [
+					            {
+					                "visibility": "off"
+					            }
+					        ]
+					    },
+					    {
+					        "featureType": "road",
+					        "elementType": "all",
+					        "stylers": [
+					            {
+					                "saturation": -100
+					            },
+					            {
+					                "lightness": 45
+					            }
+					        ]
+					    },
+					    {
+					        "featureType": "road.highway",
+					        "elementType": "all",
+					        "stylers": [
+					            {
+					                "visibility": "simplified"
+					            }
+					        ]
+					    },
+					    {
+					        "featureType": "road.arterial",
+					        "elementType": "labels.icon",
+					        "stylers": [
+					            {
+					                "visibility": "off"
+					            }
+					        ]
+					    },
+					    {
+					        "featureType": "transit",
+					        "elementType": "all",
+					        "stylers": [
+					            {
+					                "visibility": "off"
+					            }
+					        ]
+					    },
+					    {
+					        "featureType": "transit.station.bus",
+					        "elementType": "labels.icon",
+					        "stylers": [
+					            {
+					                "saturation": "-16"
+					            }
+					        ]
+					    },
+					    {
+					        "featureType": "water",
+					        "elementType": "all",
+					        "stylers": [
+					            {
+					                "color": "#04b7ff"
+					            },
+					            {
+					                "visibility": "on"
+					            }
+					        ]
+					    }
+					]
+	            };
+
+	   
+	            var mapElement = document.getElementById('googleMap');
+
+	          
+	            var map = new google.maps.Map(mapElement, mapOptions);
+
+	   
+	            var marker = new google.maps.Marker({
+	                position: new google.maps.LatLng(23.7286, 90.3854),
+	                map: map,
+	                title: 'Dcare!',
+	                icon: 'images/icons/map.png',
+	                animation:google.maps.Animation.BOUNCE
+
+	            });
+	        }
+	        function subMessage() {
+				$.ajax({
+					url:"/fore/add_contact",
+					type:"post",
+					data:$("#contact-form").serialize(),
+					success:function (data) {
+						alert(data.msg)
+                    }
+				})
+            }
+	    </script>
+
+	<script src="js/active.js"></script>
+	
+</body>
+</html>

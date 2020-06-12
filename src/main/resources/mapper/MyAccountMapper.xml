@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.book.store.mapper.MyAccountMapper">
+
+    <resultMap type="com.book.store.entity.MyAccount" id="MyAccountMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="balance" column="balance" jdbcType="NUMERIC"/>
+        <result property="merchantId" column="merchant_id" jdbcType="VARCHAR"/>
+        <result property="account" column="account" jdbcType="VARCHAR"/>
+        <result property="drawMoney" column="draw_money" jdbcType="NUMERIC"/>
+        <result property="applicant" column="applicant" jdbcType="VARCHAR"/>
+        <result property="time" column="time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Coumn_List">
+         id,merchant_id, balance, account, draw_money, applicant, `time`,status
+    </sql>
+    <!--查询单个-->
+    <select id="queryById" resultMap="MyAccountMap">
+        select
+          id,merchant_id, balance, account, draw_money, applicant, `time`
+        from bookstore.my_account
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="MyAccountMap">
+        select
+          id, balance, account, draw_money, applicant, time
+        from bookstore.my_account
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="MyAccountMap">
+        select
+          id, balance, account, draw_money, applicant, time
+        from bookstore.my_account
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="balance != null">
+                and balance = #{balance}
+            </if>
+            <if test="account != null and account != ''">
+                and account = #{account}
+            </if>
+            <if test="drawMoney != null">
+                and draw_money = #{drawMoney}
+            </if>
+            <if test="applicant != null and applicant != ''">
+                and applicant = #{applicant}
+            </if>
+            <if test="time != null">
+                and time = #{time}
+            </if>
+        </where>
+    </select>
+    <select id="selectMyAccountByMerchantId" resultMap="MyAccountMap">
+        SELECT <include refid="Base_Coumn_List"/>
+        FROM my_account WHERE merchant_id = #{merchantId}
+    </select>
+    <select id="selectAll" resultMap="MyAccountMap">
+        SELECT <include refid="Base_Coumn_List"/>
+        FROM my_account ORDER BY status DESC
+    </select>
+    <select id="selectNeedTransFer" resultMap="MyAccountMap">
+        SELECT <include refid="Base_Coumn_List"/>
+        FROM my_account WHERE status = #{stauts}
+    </select>
+    <select id="selectByTel" resultMap="MyAccountMap">
+        SELECT <include refid="Base_Coumn_List"/>
+        FROM my_account WHERE account = #{tel}
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into bookstore.my_account(merchant_id,balance, account, draw_money, applicant,status, time)
+        values (#{merchantId},#{balance}, #{account}, #{drawMoney}, #{applicant}, 0,now())
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update bookstore.my_account
+        <set>
+            <if test="balance != null">
+                balance = #{balance},
+            </if>
+            <if test="account != null and account != ''">
+                account = #{account},
+            </if>
+            <if test="drawMoney != null">
+                draw_money = #{drawMoney},
+            </if>
+            <if test="applicant != null and applicant != ''">
+                applicant = #{applicant},
+            </if>
+            <if test="time != null">
+                time = #{time},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <update id="updateMyAccount">
+        UPDATE my_account SET balance = #{balance} where merchant_id = #{merchantId}
+    </update>
+    <update id="updateAccount">
+        UPDATE my_account SET balance = #{balance} where merchant_id = #{merchantId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from bookstore.my_account where id = #{id}
+    </delete>
+
+</mapper>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.book.store.mapper.BlogMapper">
+    <resultMap id="BaseResultMap" type="com.book.store.entity.Blog">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="merchant_id" jdbcType="VARCHAR" property="merchantId"/>
+        <result column="shop_name" jdbcType="VARCHAR" property="shopName"/>
+        <result column="author_id" jdbcType="INTEGER" property="authorId"/>
+        <result column="author_name" jdbcType="VARCHAR" property="authorName"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="sub_title" jdbcType="VARCHAR" property="subTitle"/>
+        <result column="detail" jdbcType="VARCHAR" property="detail"/>
+        <result column="main_image" jdbcType="VARCHAR" property="mainImage"/>
+        <result column="comment_id" jdbcType="INTEGER" property="commentId"/>
+        <result column="create_time" jdbcType="DATE" property="createTime"/>
+        <result column="update_time" jdbcType="DATE" property="updateTime"/>
+
+    </resultMap>
+
+    <sql id="Base_column_list">
+    id,merchant_id,shop_name,author_id,author_name,title,sub_title,detail,main_image,comment_id,create_time,update_time
+  </sql>
+    <insert id="insert">
+    insert into blog ( merchant_id, shop_name, author_id, author_name,title, sub_title, detail, main_image, create_time)
+     values (
+     #{merchantId},#{shopName},#{authorId},#{authorName},#{title},#{subTitle},#{detail},#{mainImage},now()
+     );
+  </insert>
+    <update id="update"></update>
+    <delete id="delete">
+        DELETE FROM blog WHERE id = #{id}
+    </delete>
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_column_list"/>
+        FROM blog WHERE id = #{id}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_column_list"/>
+        FROM blog ORDER BY create_time DESC
+    </select>
+    <select id="selectByMerchantId" resultType="com.book.store.entity.Blog"></select>
+    <select id="selectByAuthorId" resultType="com.book.store.entity.Blog">
+
+    </select>
+    <select id="selectAllByMerchantId" resultMap="BaseResultMap" parameterType="list">
+        SELECT
+        <include refid="Base_column_list"/>
+        FROM blog WHERE merchant_id = #{merchantId} order by create_time desc
+    </select>
+    <select id="selectAllByTitle" resultMap="BaseResultMap">
+        SELECT <include refid="Base_column_list"/>
+        FROM blog WHERE title LIKE "%${title}%" or author_name LIKE "%${title}%"
+    </select>
+    <select id="selectAllByMerchantIdAndTitle" resultMap="BaseResultMap">
+        SELECT <include refid="Base_column_list"/>
+        FROM blog WHERE merchant_id = #{merchantId} and title LIKE "%${title}%" or merchant_id = #{merchantId} and author_name LIKE "%${title}%"
+    </select>
+
+
+</mapper>

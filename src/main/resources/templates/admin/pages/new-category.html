@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <base href="/"/>
+    <!--<link rel="stylesheet" href="//res.layui.com/layui/dist/css/layui.css"  media="all">-->
+    <link rel="stylesheet" href="layui/css/layui.css" media="all">
+    <script src="js/jquery-3.3.1.js"></script>
+    <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+</head>
+<body>
+
+<table class="layui-hide" id="user" lay-filter="test"></table>
+
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm layui-icon" id="addParrent" lay-event="addParrent">&#xe654;添加父分类</button>
+        <button class="layui-btn layui-btn-sm layui-icon" id="addChild" lay-event="addChild">&#xe654;添加子分类</button>
+        <button class="layui-btn layui-btn-sm layui-icon" id="updateCategory" lay-event="updateCategory">&#xe642;修改父分类</button>
+        <button class="layui-btn layui-btn-sm layui-icon" id="updateChildCategory" lay-event="updateChildCategory">&#xe642;修改子分类</button>
+
+    </div>
+</script>
+
+<script type="text/html" id="barDemo">
+    <!--<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>-->
+  <!--  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>-->
+</script>
+
+<div class="layui-form-item" id="category-view" style="display: none;margin-top: 20px">
+    <label class="layui-form-label"></label>
+    <div class="parentCategory layui-inline" style="margin-left: 20px">
+        <label >父分类</label>
+        <select name="categoryId" class="seleParent get-seleParent" style="margin-left:5px;height: 40px;width: 200px;border-color: rgb(230,230,230)"
+               >
+            <!--<option vale='-1' style="">请选择</option>-->
+        </select>
+    </div>
+    <div class="childrenCategory layui-inline" style="margin-left: 20px">
+        <label class="layui-form-label">子分类</label>
+        <div class="layui-input-inline">
+            <input name="categoryChildId" class="layui-input seleChildren get-seleChildren" style="margin-left:5px;width: 200px;" />
+        </div>
+           <!--<option value='-1' style="">请选择</option>-->
+    </div>
+
+</div>
+<div class="layui-form-item" id="category-update" style="display: none;margin-top: 20px">
+    <label class="layui-form-label"></label>
+    <div class="parentCategory layui-inline" style="margin-left: 20px">
+        <label >父分类</label>
+        <select name="categoryId" class="seleParent" id="update-pCategory" style="margin-left:5px;height: 40px;width: 200px;border-color: rgb(230,230,230)"
+                >
+            <!--<option vale='-1' style="">请选择</option>-->
+        </select>
+    </div>
+    <div class="childrenCategory layui-inline" style="margin-left: 20px">
+        <label class="layui-form-label">新名称</label>
+        <div class="layui-input-inline">
+            <input name="newCategory" class="layui-input" style="margin-left:5px;width: 200px;" id="new-parentname"/>
+        </div>
+        <!--<option value='-1' style="">请选择</option>-->
+    </div>
+
+</div>
+
+<div class="layui-form-item" id="category-updateChild" style="display: none;margin-top: 20px">
+    <label class="layui-form-label"></label>
+    <div class="parentCategory layui-inline" style="margin-left: 20px">
+        <label >父分类</label>
+        <select name="categoryId" class="seleParent " id="update-parentId" style="margin-left:5px;height: 40px;width: 200px;border-color: rgb(230,230,230)"
+               onclick="getChildren(this.value)" >
+            <!--<option vale='-1' style="">请选择</option>-->
+        </select>
+    </div>
+    <div class="parentCategory layui-inline" style="margin-left: 20px">
+        <label >子分类</label>
+        <select name="categoryId" class="seleParents " id="update-CChild" style="margin-left:5px;height: 40px;width: 200px;border-color: rgb(230,230,230)"
+                >
+            <!--<option vale='-1' style="">请选择</option>-->
+        </select>
+    </div>
+    <div class="childrenCategory layui-inline" style="margin-left: 20px">
+        <label class="layui-form-label">新名称</label>
+        <div class="layui-input-inline">
+            <input name="categoryChildId" class="layui-input  " id="categorychild-newname" style="margin-left:5px;width: 200px;" />
+        </div>
+        <!--<option value='-1' style="">请选择</option>-->
+    </div>
+
+</div>
+<!--<script src="//res.layui.com/layui/dist/layui.js" charset="utf-8"></script>-->
+<script src="layui/layui.js" charset="utf-8"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+
+<script type="text/javascript" th:inline="none">
+    $.ajax({
+        url: "/manage/categroy/get_parent_and_children_category",
+        type: "get",
+        dataType: "json",
+        success: function (data) {
+
+            $.each(data.data, function (i, obj) {
+
+                $(".seleParent").append("<option value=\"" + obj.id + "\" >" + obj.title + "</option>")
+            })
+        }
+    })
+    function getChildren(id) {
+        $.ajax({
+            url: "/manage/categroy/get_parent_and_children_category?parentId=" + id,
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                $("#update-CChild").children().remove()
+
+                $.each(data.data, function (i, obj) {
+
+                    $("#update-CChild").append("<option value=\"" + obj.id + "\" >" + obj.title + "</option>")
+                })
+            }
+        })
+    }
+    layui.use(['table', 'element', 'layer', 'jquery', 'form'], function () {
+        //var $ = layui.jquery
+        var element = layui.element
+        var layer = layui.layer
+        var form = layui.form;
+        var table = layui.table;
+        var tableIns = table.render({
+            elem: '#user'
+            , url: '/manage/categroy/get_new_category'
+            , limits: [10, 20, 30, 40, 50, 60, 70, 80, 90]
+            ,limit:20
+            , toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+            , defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+                title: '提示'
+                , layEvent: 'LAYTABLE_TIPS'
+                , icon: 'layui-icon-tips'
+            }]
+            , title: '分类表'
+            , totalRow: true
+            , cols: [[
+                {type: 'checkbox', fixed: 'left'}
+                , {field: 'id', title: '序号', width: "5%", fixed: 'left', unresize: true, sort: true, type: "numbers"}
+                , {field: 'title', title: '父分类', width: "20%"}
+                , {field: 'sunCategory', title: '子分类', width: "50%"}
+              /*  , {field: 'createTime', title: '创建时间', width: "15%", sort: true}
+                , {field: 'updateTime', title: '更新时间', width: "15%", sort: true}*/
+                /*, {fixed: 'right', title: '操作', toolbar: '#barDemo'}*/
+            ]]
+            , page: true
+            /*,response: {
+                statusCode: 200 //重新规定成功的状态码为 200，table 组件默认为 0
+            }*/
+            , parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+
+                return {
+                    "code": 0, //解析接口状态
+                    "msg": "数据显示", //解析提示文本
+                    "count": 0, //解析数据长度
+                    "data": res.data //解析数据列表
+                };
+            }
+        });
+        //头工具栏事件
+        table.on('toolbar(test)', function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch (obj.event) {
+
+                case 'addParrent':
+                    layer.open({
+                        type: 1,
+                        title: "添加父分类",
+                        area: ['350px', '180px'],
+
+
+                        content: "<form class='layui-form' style='margin-top: 20px'><div class=\"layui-inline\">\n" +
+                        "    <label class=\"layui-form-label\">分类名称</label>\n" +
+                        "    <div class=\"layui-input-inline\">\n" +
+                        "      <input type=\"text\" id='parent-category' name=\"title\" lay-verify=\"title\" autocomplete=\"off\" placeholder=\"\" class=\"layui-input\">\n" +
+                        "    </div>\n" +
+                        "  </div></form>"
+                        ,btn: ['确定', '取消'],
+                        yes: function (index, layero) {
+
+                            $.ajax({
+                                url:"/manage/categroy/add_parent",
+                                type:"post",
+                                data:{
+                                    "name":$("#parent-category").val()
+                                },
+                                success:function (data) {
+                                    if(data.msg === "SUCCESS"){
+                                        layer.msg(data.msg, {icon: 6});
+                                        layer.close(index)
+                                        tableIns.reload()
+                                    }else {
+                                        layer.msg(data.msg, {icon: 5});
+                                    }
+
+                                }
+
+                            })
+                        },
+                        btn1: function (index, layero) {
+                            layer.close(index)
+                        },
+                    });
+                    break;
+                case "addChild":
+                    layer.open({
+                        type: 1,
+                        title: "添加子分类",
+                        area: ['850px', '200px'],
+
+                        content:$("#category-view")
+                        ,btn: ['确定', '取消'],
+                        yes: function (index, layero) {
+
+                            $.ajax({
+                                url:"/manage/categroy/add_child",
+                                type:"post",
+                                data:{
+                                    "parentId":$(".get-seleParent").val(),
+                                    "childrenName":$(".get-seleChildren").val()
+                                },
+                                success:function (data) {
+                                    if(data.msg === "SUCCESS"){
+                                        layer.msg("更新成功", {icon: 6});
+                                        layer.close(index)
+                                        tableIns.reload()
+                                    }else {
+                                        layer.msg(data.msg, {icon: 5});
+                                    }
+
+                                }
+
+                            })
+                        },
+                        btn1: function (index, layero) {
+                            layer.close(index)
+                        },
+                    });
+                    break;
+                case "updateCategory":
+                    layer.open({
+                        type: 1,
+                        title: "修改父分类",
+                        area: ['850px', '200px'],
+
+                        content:$("#category-update")
+                        ,btn: ['确定', '取消'],
+                        yes: function (index, layero) {
+
+                            $.ajax({
+                                url:"/manage/categroy/update_category",
+                                type:"post",
+                                data:{
+                                    "parentId":$("#update-pCategory").val(),
+                                    "newCategory":$("#new-parentname").val()
+                                },
+                                success:function (data) {
+                                    if(data.msg === "SUCCESS"){
+                                        layer.msg(data.msg, {icon: 6});
+                                        layer.close(index)
+                                        tableIns.reload()
+                                    }else {
+                                        layer.msg(data.msg, {icon: 5});
+                                    }
+
+                                }
+
+                            })
+                        },
+                        btn1: function (index, layero) {
+                            layer.close(index)
+                        },
+                    });
+                    break;
+                case "updateChildCategory":
+                    layer.open({
+                        type: 1,
+                        title: "修改子分类",
+                        area: ['1200px', '200px'],
+
+                        content:$("#category-updateChild")
+                        ,btn: ['确定', '取消'],
+                        yes: function (index, layero) {
+
+                            $.ajax({
+                                url:"/manage/categroy/update_category",
+                                type:"post",
+                                data:{
+                                    "parentId":$("#update-CChild").val(),
+                                    "newCategory":$("#categorychild-newname").val()
+                                },
+                                success:function (data) {
+                                    if(data.msg === "SUCCESS"){
+                                        layer.msg(data.msg, {icon: 6});
+                                        layer.close(index)
+                                        tableIns.reload()
+                                    }else {
+                                        layer.msg(data.msg, {icon: 5});
+                                    }
+
+                                }
+
+                            })
+                        },
+                        btn1: function (index, layero) {
+                            layer.close(index)
+                        },
+                    });
+                    break;
+                //自定义头工具栏右侧图标 - 提示
+                case 'LAYTABLE_TIPS':
+                    layer.alert('这是工具栏右侧自定义的一个图标按钮');
+                    break;
+            };
+
+        });
+
+    });
+
+</script>
+
+</body>
+</html>

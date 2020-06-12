@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.book.store.mapper.ShopMapper" >
+    <resultMap id="BaseResultMap" type="com.book.store.entity.Shop" >
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="merchant_id" jdbcType="VARCHAR" property="merchantId"/>
+        <result column="shop_name" jdbcType="VARCHAR" property="shopName"/>
+        <result column="sub_title" jdbcType="VARCHAR" property="subTitle"/>
+        <result column="id_cart" jdbcType="VARCHAR" property="idCart"/>
+        <result column="detail" jdbcType="VARCHAR" property="detail"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="shop_manager" jdbcType="VARCHAR" property="shopManager"/>
+        <result column="tel" jdbcType="VARCHAR" property="tel"/>
+        <result column="image" jdbcType="VARCHAR" property="image"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="create_time" jdbcType="DATE" property="createTime"/>
+        <result column="update_time" jdbcType="DATE" property="updateTime"/>
+
+    </resultMap>
+    <sql id="Base_Column_List" >
+        id, merchant_id,id_cart,shop_name,sub_title,detail,address,shop_manager,tel,image,email, create_time, update_time
+    </sql>
+    <insert id="insert">
+        insert into shop (merchant_id,id_cart, shop_name, sub_title,
+         detail, address, shop_manager, tel, image, email, create_time)
+         values (
+         #{merchantId},#{idCart},#{shopName},#{subTitle},#{detail},#{address},#{shopManager},#{tel},#{image},#{email},now()
+         );
+    </insert>
+    <insert id="addShop"></insert>
+    <update id="updateByMerchantId"></update>
+    <delete id="deleteShopById">
+        DELETE FROM shop WHERE id = #{id}
+    </delete>
+    <delete id="deleteShopByMerchantId"></delete>
+    <select id="selectShopById" resultType="com.book.store.entity.Shop"></select>
+    <select id="selectShopByMerchantId" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM shop WHERE merchant_id = #{merchantId}
+    </select>
+    <select id="selectAllList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM shop
+    </select>
+    <select id="checkByTel" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM shop WHERE tel = #{tel}
+    </select>
+    <select id="selectAllListByName" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM shop WHERE shop_name LIKE "%${name}%" or merchant_id LIKE "%${name}%"
+    </select>
+
+
+</mapper>

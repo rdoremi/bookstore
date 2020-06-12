@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>后台管理平台</title>
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <base href="/"/>
+    <link rel="shortcut icon" href="favicon.ico" type="admin/image/x-icon"/>
+    <link rel="stylesheet" href="admin/css/font.css">
+    <link rel="stylesheet" href="admin/css/xadmin.css">
+    <script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+    <script src="admin/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="admin/js/xadmin.js"></script>
+
+</head>
+<body>
+<!-- 顶部开始 -->
+<div class="container">
+    <div class="logo"><a href="index.html">后台管理平台</a></div>
+    <div class="left_open">
+        <i title="展开左侧栏" class="iconfont">&#xe699;</i>
+    </div>
+    <!--<ul class="layui-nav left fast-add" lay-filter="">
+        <li class="layui-nav-item">
+            <a href="javascript:;">+新增</a>
+            <dl class="layui-nav-child"> &lt;!&ndash; 二级菜单 &ndash;&gt;
+                <dd><a onclick="x_admin_show('资讯','http://www.baidu.com')"><i class="iconfont">&#xe6a2;</i>资讯</a></dd>
+                <dd><a onclick="x_admin_show('图片','http://www.baidu.com')"><i class="iconfont">&#xe6a8;</i>图片</a></dd>
+                <dd><a onclick="x_admin_show('用户','http://www.baidu.com')"><i class="iconfont">&#xe6b8;</i>用户</a></dd>
+            </dl>
+        </li>
+    </ul>-->
+    <ul class="layui-nav right" lay-filter="">
+        <li class="layui-nav-item">
+
+            <a href="javascript:;" th:text="${session.current.username}">admin</a><!--th:text="${session.current.username}"-->
+            <dl class="layui-nav-child"> <!-- 二级菜单 -->
+                <dd><a onclick="admin_show()">个人信息</a></dd>
+                <dd><a id="change-account">切换帐号</a></dd><!--onclick="x_admin_show('切换帐号','/admin_logout')"-->
+                <dd><a href="/admin/page/logout">退出</a></dd>
+            </dl>
+        </li>
+        <li class="layui-nav-item to-index"><a href="/admin/page/goshop" target="_blank">我的店铺</a></li>
+    </ul>
+
+</div>
+<!-- 顶部结束 -->
+<!-- 中部开始 -->
+<!-- 左侧菜单开始 -->
+<div class="left-nav">
+    <div id="side-nav">
+        <ul id="nav">
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont">&#xe726;</i>
+                    <cite>管理员管理</cite>
+                    <i class="iconfont nav_right">&#xe6a7;</i>
+                </a>
+                <ul class="sub-menu">
+                    <li>
+                        <a _href="/admin/page/manage_list">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>管理员列表</cite>
+                        </a>
+                    </li>
+                    <!--<li>
+                        <a _href="/admin/page/role_change_list">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>权限管理</cite>
+                        </a>
+                    </li>-->
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont">&#xe6b8;</i>
+                    <cite>用户管理</cite>
+                    <i class="iconfont nav_right">&#xe6a7;</i>
+                </a>
+                <ul class="sub-menu">
+                    <li>
+                        <a _href="/admin/page/user_list">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>用户列表</cite>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont">&#xe6e4;</i>
+                    <cite>分类管理</cite>
+                    <i class="iconfont nav_right">&#xe6a7;</i>
+                </a>
+                <ul class="sub-menu">
+
+                    <li><a _href="/admin/page/new_category"><i class="iconfont">&#xe6a7;</i><cite>商品分类</cite></a></li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="javascript:;"><i class="iconfont">&#xe6f6;</i><cite>商品管理</cite><i class="iconfont nav_right">&#xe6a7;</i></a>
+                <ul class="sub-menu">
+                    <li><a _href="/admin/page/product_add"><i class="iconfont">&#xe6a7;</i><cite>添加商品</cite></a></li>
+                    <li><a _href="/admin/page/product_list"><i class="iconfont">&#xe6a7;</i><cite>商品列表</cite></a></li>
+                   <!-- <li><a _href="/admin/page/product_recommend"><i class="iconfont">&#xe6a7;</i><cite>商品推荐</cite></a></li>-->
+                    <!--<li><a _href="html/page.html"><i class="iconfont">&#xe6a7;</i><cite>全部商品</cite></a></li>-->
+
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont">&#xe6b4;</i>
+                    <cite>订单管理</cite>
+                    <i class="iconfont nav_right">&#xe6a7;</i>
+                </a>
+                <ul class="sub-menu">
+                    <li><a _href="/admin/page/admin_order_edit"><i class="iconfont">&#xe6a7;</i><cite>待处理</cite></a></li>
+                    <li><a _href="/admin/page/admin_order_refund"><i class="iconfont">&#xe6a7;</i><cite>待退款</cite></a></li>
+                    <li><a _href="/admin/page/admin_order_return"><i class="iconfont">&#xe6a7;</i><cite>待退货</cite></a></li>
+                    <li><a _href="/admin/page/admin_order_finish"><i class="iconfont">&#xe6a7;</i><cite>已取消</cite></a></li>
+                    <li><a _href="/admin/page/admin_order_list"><i class="iconfont">&#xe6a7;</i><cite>全部订单</cite></a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont">&#xe6b8;</i>
+                    <cite>店铺管理</cite>
+                    <i class="iconfont nav_right">&#xe6a7;</i>
+                </a>
+                <ul class="sub-menu">
+                    <li>
+                        <a _href="/admin/page/shop_add">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>添加店铺</cite>
+                        </a>
+                    </li>
+                    <li><a _href="/admin/page/shop_list_admin"><i class="iconfont">&#xe6a7;</i><cite>店铺列表</cite></a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont">&#xe6b8;</i>
+                    <cite>博客</cite>
+                    <i class="iconfont nav_right">&#xe6a7;</i>
+                </a>
+                <ul class="sub-menu">
+                    <li>
+                        <a _href="/admin/page/blog_add">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>添加博客</cite>
+                        </a>
+                    </li>
+                    <li><a _href="/admin/page/my_blog_list"><i class="iconfont">&#xe6a7;</i><cite>我的博客</cite></a></li>
+                    <li><a _href="/admin/page/blog_list"><i class="iconfont">&#xe6a7;</i><cite>全部博客</cite></a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont">&#xe6b4;</i>
+                    <cite>留言板</cite>
+                    <i class="iconfont nav_right">&#xe6a7;</i>
+                </a>
+                <ul class="sub-menu">
+                    <li><a _href="/admin/page/contact"><i class="iconfont">&#xe6a7;</i><cite>全部留言</cite></a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont">&#xe6ae;</i>
+                    <cite>我的账户</cite>
+                    <i class="iconfont nav_right">&#xe6a7;</i>
+                </a>
+                <ul class="sub-menu">
+                    <li>
+                        <a _href="/admin/page/my_account">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>我的账户</cite>
+                        </a>
+                    </li>
+                    <li>
+                        <a _href="/admin/page/balance">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>商家账户</cite>
+                        </a>
+                    </li>
+                    <li>
+                        <a _href="/admin/page/transfer_accounts">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>转账</cite>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont">&#xe6ae;</i>
+                    <cite>统计</cite>
+                    <i class="iconfont nav_right">&#xe6a7;</i>
+                </a>
+                <ul class="sub-menu">
+                    <li>
+                        <a _href="/admin/page/cartogram">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>交易统计</cite>
+                        </a>
+                    </li>
+
+                </ul>
+            </li>
+
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont">&#xe6ae;</i>
+                    <cite>系统管理</cite>
+                    <i class="iconfont nav_right">&#xe6a7;</i>
+                </a>
+                <ul class="sub-menu">
+                    <li>
+                        <a _href="/admin/page/nav">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>导航栏</cite>
+                        </a>
+                    </li>
+
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- <div class="x-slide_left"></div> -->
+<!-- 左侧菜单结束 -->
+<!-- 右侧主体开始 -->
+<div class="page-content">
+    <div class="layui-tab tab" lay-filter="xbs_tab" lay-allowclose="false">
+        <ul class="layui-tab-title">
+            <li class="home"><i class="layui-icon">&#xe68e;</i>我的桌面</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <iframe src='/admin/page/welcome' frameborder="0" scrolling="yes" class="x-iframe"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page-content-bg"></div>
+<!-- 右侧主体结束 -->
+<!-- 中部结束 -->
+<!-- 底部开始 -->
+<!--<div class="footer">
+    <div class="copyright">Copyright ©2019 L-admin v2.3 All Rights Reserved</div>
+</div>-->
+<!-- 底部结束 -->
+<script>
+    $("#change-account").click(function () {
+        layui.use(['table', 'element', 'layer', 'jquery', 'form'], function () {
+            //var $ = layui.jquery
+            var layer = layui.layer
+
+
+            layer.open({
+                type: 1,
+                area: ["500px", "300px"],
+
+                shadeClose: true,
+                shade:0.4,
+                title: "切换用户",
+                content: "<form class=\"layui-form\" style='margin-left: 50px;margin-top: 30px' action=\"\">\n" +
+                "        <div class=\"layui-form-item\">\n" +
+                "            <label class=\"layui-form-label\">手机号</label>\n" +
+                "            <div class=\"layui-input-block\" style=\"width: 200px\">\n" +
+                "                <input type=\"text\" id='log_tel' name=\"tel\"   placeholder=\"请输入手机号\" class=\"layui-input\">\n" +
+                "            </div>\n" +
+                "        </div>\n" +
+                "        <div class=\"layui-form-item\">\n" +
+                "            <label class=\"layui-form-label\" >密&nbsp;&nbsp;&nbsp;&nbsp;码</label>\n" +
+                "            <div class=\"layui-input-block\" style=\"width: 200px\">\n" +
+                "                <input type=\"password\" id='log_password' name=\"password\"  autocomplete=\"off\" placeholder=\"请输入密码\" class=\"layui-input\">\n" +
+                "            </div>\n" +
+                "        </div>\n" +
+                "     \n" +
+                "\n" +
+                "    </form>"
+                ,btn:['确定','取消'],
+                yes: function (index, layero) {
+                    var tel = $("#log_tel").val()
+                    var password = $("#log_password").val()
+
+                    var role = $("#update_role").val();
+                    $.ajax({
+                        url: "/admin/user/login",
+                        type: "post",
+                        data: {
+                            "tel": tel,
+                            "password":password
+                        },
+                        success: function (data) {
+                            if (data.msg === "SUCCESS") {
+                                layer.close(index)
+                                $(location).attr('href', '/admin/page/index');
+                                layer.msg(data.msg, {icon: 6});
+                            } else {
+                                layer.msg(data.msg, {icon: 5});
+                            }
+
+                        }
+
+                    })
+                },
+                btn1: function (index, layero) {
+                    layer.close(index)
+                },
+            });
+
+
+        });
+    })
+</script>
+</body>
+</html>

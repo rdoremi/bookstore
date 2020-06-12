@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.book.store.mapper.BlogCommentMapper">
+
+    <resultMap type="com.book.store.entity.BlogComment" id="BlogCommentMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="blogId" column="blog_id" jdbcType="INTEGER"/>
+        <result property="tel" column="tel" jdbcType="VARCHAR"/>
+        <result property="username" column="username" jdbcType="VARCHAR"/>
+        <result property="detail" column="detail" jdbcType="VARCHAR"/>
+        <result property="image" column="image" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="createUpdate" column="create_update" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, blog_id, tel, username, detail, image, create_time
+    </sql>
+    <!--查询单个-->
+    <select id="queryById" resultMap="BlogCommentMap">
+        select
+          id, blog_id, tel, username, detail, image, create_time, create_update
+        from bookstore.blog_comment
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BlogCommentMap">
+        select
+          id, blog_id, tel, username, detail, image, create_time, create_update
+        from bookstore.blog_comment
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BlogCommentMap">
+        select
+          id, blog_id, tel, username, detail, image, create_time, create_update
+        from bookstore.blog_comment
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="blogId != null">
+                and blog_id = #{blogId}
+            </if>
+            <if test="tel != null and tel != ''">
+                and tel = #{tel}
+            </if>
+            <if test="username != null and username != ''">
+                and username = #{username}
+            </if>
+            <if test="detail != null and detail != ''">
+                and detail = #{detail}
+            </if>
+            <if test="image != null and image != ''">
+                and image = #{image}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="createUpdate != null">
+                and create_update = #{createUpdate}
+            </if>
+        </where>
+    </select>
+    <select id="selectByBLogId" resultMap="BlogCommentMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM blog_comment WHERE blog_id = #{blogId}
+    </select>
+    <select id="checkTel" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM blog_comment WHERE blog_id = #{blogId} and tel = #{tel}
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into blog_comment(blog_id, tel, username, detail, create_time)
+        values (#{blogId}, #{tel}, #{username}, #{detail}, now())
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update bookstore.blog_comment
+        <set>
+            <if test="blogId != null">
+                blog_id = #{blogId},
+            </if>
+            <if test="tel != null and tel != ''">
+                tel = #{tel},
+            </if>
+            <if test="username != null and username != ''">
+                username = #{username},
+            </if>
+            <if test="detail != null and detail != ''">
+                detail = #{detail},
+            </if>
+            <if test="image != null and image != ''">
+                image = #{image},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="createUpdate != null">
+                create_update = #{createUpdate},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from bookstore.blog_comment where id = #{id}
+    </delete>
+
+</mapper>

@@ -1,0 +1,446 @@
+﻿<!doctype html>
+<html class="no-js" lang="zxx" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>书店-地址信息</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Favicons -->
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/icon.png">
+
+    <!-- Google font (font-family: 'Roboto', sans-serif; Poppins ; Satisfy) -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,300i,400,400i,500,600,600i,700,700i,800"
+          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/plugins.css">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Cusom css -->
+    <link rel="stylesheet" href="css/custom.css">
+
+
+    <!-- Modernizer js -->
+    <script src="js/vendor/modernizr-3.5.0.min.js"></script>
+
+    <!--<script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+    <script src="https://www.jq22.com/jquery/jquery-migrate-1.2.1.min.js"></script>-->
+
+    <script type="text/javascript" src="js/jquery-3.3.1.js"></script>
+    <script src="https://www.jq22.com/jquery/jquery-migrate-1.2.1.min.js"></script>
+    <script type="text/javascript" src="js/address/js/common.js"></script>
+    <script type="text/javascript" src="js/address/js/jquery.Form.js"></script>
+    <script type="text/javascript" src="js/address/js/jquery.Area.js"></script>
+    <script type="text/javascript" src="js/address/js/jquery.Spinner.js"></script>
+</head>
+<body>
+
+
+<!-- Main wrapper -->
+<div class="wrapper" id="wrapper">
+
+    <!-- Header -->
+    <header id="wn__header" class="oth-page header__area header__absolute sticky__header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-4 col-sm-4 col-7 col-lg-2">
+                    <div class="logo">
+                        <a href="index.html">
+                            <img src="images/logo/logo.png" alt="logo images">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-8 d-none d-lg-block">
+                    <nav class="mainmenu__nav">
+                        <ul class="meninmenu d-flex justify-content-start">
+                           <!-- <li class="drop with&#45;&#45;one&#45;&#45;item"><a href="/index">首页</a>
+                            </li>
+                            <li class="drop"><a href="/shop_list">店铺</a>
+                            </li>
+                            <li class="drop"><a href="/book_list">图书</a>
+
+                            </li>
+                            <li class="drop"><a href="/children_books">童书</a>
+
+                            </li>
+                            <li class="drop"><a href="/material">资料</a>
+
+                            </li>
+                            <li class="drop"><a href="/periodical">期刊</a>
+
+                            </li>
+
+                            <li class="drop"><a href="/blog">博客</a>
+
+                            </li>
+                            <li><a href="/contact">联系</a></li>-->
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-md-6 col-sm-6 col-6 col-lg-2">
+                    <ul class="header__sidebar__right d-flex justify-content-end align-items-center">
+                        <li class="shop_search"><a class="search__active" href="#"></a></li>
+                        <li class="wishlist"><a href="#"></a></li>
+                        <li class="shopcart"><a class="cartbox_active" href="#"><span class="product_qun" th:text="${session.total}">0</span></a>
+                            <!-- Start Shopping Cart -->
+                            <div class="block-minicart minicart__active">
+                                <div class="minicart-content-wrapper">
+                                    <div class="micart__close">
+                                        <span></span>
+                                    </div>
+                                    <div class="items-total d-flex justify-content-between">
+                                        <span>共 <span th:text="${session.total}"></span>件商品</span>
+                                        <span>当前列表总价</span>
+                                    </div>
+                                    <div class="total_amount text-right">
+                                        <span>￥ <span th:text="${session.totalPrice}"></span></span>
+                                    </div>
+                                    <!--<div class="mini_action checkout">
+                                        <a class="checkout__btn" href="cart.html">去购买</a>
+                                    </div>-->
+                                    <div class="single__items">
+                                        <div class="miniproduct">
+
+                                            <div class="item01 d-flex mt--20" th:each="cart:${session.Cart}">
+                                                <div class="thumb">
+                                                    <a th:href="@{/product_detail(id=${cart.productId})}"><img th:src="${cart.images}" alt="product images"></a>
+                                                </div>
+                                                <div class="content">
+                                                    <h6><a href="product-details.html" th:text="${cart.productName}"></a></h6>
+                                                    <span class="prize" >￥ <span th:text="${cart.price}"></span></span>
+                                                    <div class="product_prize d-flex justify-content-between">
+                                                        <span class="qun" th:text="${cart.quantity}"></span>
+                                                        <ul class="d-flex justify-content-end">
+                                                            <li><a href="#"><i class="zmdi zmdi-settings"></i></a></li>
+                                                            <li><a href="#"><i class="zmdi zmdi-delete"></i></a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="mini_action cart">
+                                        <a class="cart__btn" href="/cart_list">查看全部购物车商品</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Shopping Cart -->
+                        </li>
+                        <li class="setting__bar__icon"><a class="setting__active" href="#"></a>
+                            <div class="searchbar__content setting__block">
+                                <div class="content-inner">
+
+                                    <div class="switcher-currency">
+                                        <strong class="label switcher-label">
+                                            <span>我的账户</span>
+                                        </strong>
+                                        <div class="switcher-options">
+                                            <div class="switcher-currency-trigger">
+                                                <div class="setting__menu">
+                                                    <span><a href="/my_info" target="_blank">我的信息</a></span>
+                                                    <span><a href="/cart_list">购物车</a></span>
+                                                    <span><a href="/my_collect">我的收藏</a></span>
+                                                    <span><a href="/my_order">我的订单</a></span>
+                                                    <span><a href="/receiver">管理收货地址</a></span>
+                                                    <span ><a href="/foreLogin" th:if="${session.foreCurrent == null}">登录/注册</a></span>
+                                                    <span ><a href="/logout" th:if="${session.foreCurrent != null}"><span style="color: red">注销</span>：<span th:text="${session.foreCurrent.tel}"></span></a></span>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- Start Mobile Menu -->
+            <div class="row d-none">
+                <div class="col-lg-12 d-none">
+                    <nav class="mobilemenu__nav">
+                        <ul class="meninmenu">
+                            <li><a href="/index">首页</a>
+
+                            </li>
+                            <li><a href="/shop_list">店铺</a>
+
+                            </li>
+                            <li><a href="/book_list">图书</a>
+                            <li><a href="/children_books">儿童书籍</a>
+                            <li><a href="#">Pages</a>
+
+                            </li>
+                            <li><a href="/blog">博客</a>
+                            </li>
+                            <li><a href="/contact">联系</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <!-- End Mobile Menu -->
+            <div class="mobile-menu d-block d-lg-none">
+            </div>
+            <!-- Mobile Menu -->
+        </div>
+    </header>
+    <!-- //Header -->
+    <!-- Start Search Popup -->
+    <div class="brown--color box-search-content search_active block-bg close__top">
+        <form id="search_mini_form" class="minisearch" action="/search" method="get">
+            <div class="field__search">
+
+                <input type="text" class="product-search" name="search" placeholder="搜索">
+                <div class="action">
+                    <button  class="btn btn-default" type="submit" ><i class="zmdi zmdi-search"></i></button>
+
+                </div>
+
+            </div>
+        </form>
+        <div class="close__wrap">
+            <!--<span>关闭</span>-->
+        </div>
+    </div>
+    <!-- End Search Popup -->
+    <!-- Start Bradcaump area -->
+    <div class="ht__bradcaump__area bg-image--3">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="bradcaump__inner text-center">
+                        <h2 class="bradcaump-title">收货地址管理</h2>
+                        <nav class="bradcaump-content">
+                            <a class="breadcrumb_item" href="index.html">首页</a>
+                            <span class="brd-separetor">/</span>
+                            <span class="breadcrumb_item active">收货地址</span>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Bradcaump area -->
+    <!-- cart-main-area start -->
+    <div class="cart-main-area section-padding--lg bg--white">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 ol-lg-12">
+                    <form action="#">
+                        <div class="table-content wnro__table table-responsive">
+                            <table>
+                                <thead>
+                                <tr class="title-top">
+                                    <th>收件人</th>
+                                    <th>电话</th>
+                                    <th>详细地址</th>
+                                    <th>邮编</th>
+                                    <th>编辑</th>
+                                    <th>删除</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="r:${receiver}">
+                                    <td th:text="${r.receiver}"></td>
+                                    <td th:text="${r.tel}"></td>
+                                    <td th:text="${r.detail}"></td>
+                                    <td th:text="${r.postalcode}"></td>
+                                    <td>编辑</td>
+                                    <td><input type="button" onclick="deleteAddress(this.name)" style="background-color: white" th:attr="name=${r.id}" value="X"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                    <div class="cartbox__btn">
+                        <ul class=" d-flex flex-wrap flex-md-nowrap flex-lg-nowrap justify-content-between">
+
+                            <li>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="wn_checkout_wrap">
+                                            <a class="showcoupon" href="#">+新增地址</a>
+                                            <div class="checkout_coupon">
+                                                <form class="wn__checkout__form" id="receiver-address">
+                                                    <p>温馨提示！！！ 请填写准确的地址.</p>
+
+                                                    <div class="input__box">
+                                                        <label>收件人 <span>*</span></label>
+                                                        <input type="text" name="receiver">
+                                                    </div>
+
+                                                    <div class="input__box">
+                                                        <label>联系方式 <span>*</span></label>
+                                                        <input type="text" name="tel">
+                                                    </div>
+                                                    <div class="input__box">
+                                                        <label>地址 <span>*</span></label>
+                                                        <div>
+                                                            <table>
+                                                                <tr class="iDo-info-p">
+                                                                    <td>
+                                                                        <span class="iDo-info-title">选择省市：</span></td>
+                                                                    <td style="text-align: left">
+                                                                        <div class=" select-address iDo-info-box iDo-info-select">
+                                                                            <label id="province">
+                                                                                <select style="height: 25px" name="area" class="txt-len-4"
+                                                                                        id="iDo-province">
+                                                                                    <option>--请选择--</option>
+                                                                                </select>
+                                                                            </label>
+                                                                            <span class="iDo-sc"></span>
+                                                                            <label id="city">
+                                                                                <select style="height: 25px" name="area" class="txt-len-5" id="iDo-city">
+                                                                                    <option>--请选择--</option>
+                                                                                </select>
+                                                                            </label>
+                                                                            <span class="iDo-sc"></span>
+                                                                            <label id="county">
+                                                                                <select style="height: 25px" name="area" class="txt-len-6"
+                                                                                        id="iDo-county">
+                                                                                    <option>--请选择--</option>
+                                                                                </select>
+                                                                            </label>
+                                                                        </div>
+                                                                    </td>
+
+
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <div class="input__box">
+                                                        <label>详细地址(乡/镇/街道/门牌号/小区等) <span>*</span></label>
+                                                        <input type="text" name="detail">
+                                                    </div>
+                                                    <div class="input__box">
+                                                        <label>邮政编码 <span>*</span></label>
+                                                        <input type="text" name="postalcode">
+                                                    </div>
+                                                    <div class="form__btn">
+                                                        <a class="sub-btn" onclick="addReceiver()">提交</a>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- cart-main-area end -->
+    <!-- Footer Area -->
+    <footer id="wn__footer" class="footer__area bg__cat--8 brown--color">
+        <div class="footer-static-top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="footer__widget footer__menu">
+                            <div class="ft__logo">
+                                <a href="index.html">
+                                    <img src="images/logo/3.png" alt="logo">
+                                </a>
+                                <!--<p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered duskam alteration variations of passages</p>-->
+                            </div>
+                            <div class="footer__content">
+                                <ul class="social__net social__net--2 d-flex justify-content-center">
+                                    <li><a href="#"><i class="bi bi-facebook"></i></a></li>
+                                    <li><a href="#"><i class="bi bi-google"></i></a></li>
+                                    <li><a href="#"><i class="bi bi-twitter"></i></a></li>
+                                    <li><a href="#"><i class="bi bi-linkedin"></i></a></li>
+                                    <li><a href="#"><i class="bi bi-youtube"></i></a></li>
+                                </ul>
+                                <ul class="mainmenu d-flex justify-content-center">
+                                    <li><a href="">博客</a></li>
+                                    <li><a href="">加入我们</a></li>
+                                    <li><a href="">订阅</a></li>
+                                    <li><a href="">邮件</a></li>
+                                    <li><a href="">联系</a></li>
+                                    <li><a href="">关于</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="copyright__wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="copyright">
+                            <div class="copy__right__inner text-left">
+                                <p>Copyright <i class="fa fa-copyright"></i> <a href="" title="bootstrapmb">haixia.com</a> All Rights Reserved</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="payment text-right">
+                            <img src="images/icons/payment.png" alt="" />
+                        </div>
+                    </div>-->
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- //Footer Area -->
+
+</div>
+<!-- //Main wrapper -->
+
+<!-- JS Files -->
+<script src="js/vendor/jquery-3.2.1.min.js"></script>
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/plugins.js"></script>
+<script src="js/active.js"></script>
+<script src="js/menu.js"></script>
+<script type="text/javascript">
+    function addReceiver() {
+        $.ajax({
+            url:"/fore/add_receiver",
+            type:"post",
+            data:$("#receiver-address").serialize(),
+            success:function (data) {
+                alert(data.msg)
+                location.reload()
+            }
+        })
+    }
+    function deleteAddress(v) {
+        if(tr()){
+            $.ajax({
+                url:"fore/delete_receiver",
+                type:"get",
+                data:{
+                    "id":v
+                },
+                success:function (data) {
+                    alert(data.msg)
+                    location.reload()
+                }
+            })
+        }
+    }
+    function tr() {
+        if (window.confirm('你确定要删除吗？')) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+</script>
+</body>
+</html>

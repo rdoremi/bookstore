@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.book.store.mapper.AccountMapper">
+
+    <resultMap type="com.book.store.entity.Account" id="AccountMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="merchantId" column="merchant_id" jdbcType="VARCHAR"/>
+        <result property="year" column="year" jdbcType="INTEGER"/>
+        <result property="month" column="month" jdbcType="INTEGER"/>
+        <result property="day" column="day" jdbcType="INTEGER"/>
+        <result property="total" column="total" jdbcType="NUMERIC"/>
+        <result property="dailyReceipts" column="daily_receipts" jdbcType="NUMERIC"/>
+        <result property="annualIncome" column="annual_income" jdbcType="NUMERIC"/>
+        <result property="rufund" column="rufund" jdbcType="NUMERIC"/>
+        <result property="monthlyIncome" column="monthly_income" jdbcType="NUMERIC"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+       id, merchant_id, total,daily_receipts,annual_income,`day`, rufund, monthly_income,`year`,`month`, create_time, update_time
+    </sql>
+    <!--查询单个-->
+    <select id="queryById" resultMap="AccountMap">
+        select
+          id, merchant_id, total, rufund, monthly_income, create_time, update_time
+        from bookstore.account
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="AccountMap">
+        select
+          id, merchant_id, total, rufund, monthly_income, create_time, update_time
+        from bookstore.account
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="AccountMap">
+        select
+          id, merchant_id, total, rufund, monthly_income, create_time, update_time
+        from bookstore.account
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="merchantId != null and merchantId != ''">
+                and merchant_id = #{merchantId}
+            </if>
+            <if test="total != null">
+                and total = #{total}
+            </if>
+            <if test="rufund != null">
+                and rufund = #{rufund}
+            </if>
+            <if test="monthlyIncome != null">
+                and monthly_income = #{monthlyIncome}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+        </where>
+    </select>
+    <select id="getOneByMerchantId" resultMap="AccountMap">
+        SELECT <include refid="Base_Column_List"/>  FROM account WHERE merchant_id = #{merchantId} ORDER BY create_time DESC
+    </select>
+    <select id="selectAll" resultMap="AccountMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM account
+    </select>
+    <select id="selectByMerchantMonth" resultMap="AccountMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM account WHERE merchant_id = #{merchantId} and `year` = #{year}
+        and `month` = #{month} order by create_time desc
+    </select>
+    <select id="selectByMerchantMonthDay" resultMap="AccountMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM account WHERE merchant_id = #{merchantId} and `year` = #{year}
+        and `month` = #{month} and `day` = #{day} order by create_time desc
+    </select>
+    <select id="selectByMerchantYear" resultMap="AccountMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM account WHERE merchant_id = #{merchantId} and `year` = #{year}
+         order by create_time desc
+    </select>
+    <select id="selectByMerchantMonthOneDay" resultMap="AccountMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM account WHERE merchant_id = #{merchantId} and `year` = #{year}
+        and `month` = #{month} and `day` = #{day}
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into bookstore.account(merchant_id, total, rufund, monthly_income, create_time)
+        values (#{merchantId}, #{total}, #{rufund}, #{monthlyIncome}, now())
+    </insert>
+    <insert id="addAccount">
+        insert into account ( merchant_id, total,daily_receipts,annual_income, monthly_income,`year`,`month`,`day`, create_time)
+         values (
+         #{merchantId},#{total},#{dailyReceipts},#{annualIncome},#{monthlyIncome},#{year},#{month},#{day},now()
+         );
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update bookstore.account
+        <set>
+            <if test="merchantId != null and merchantId != ''">
+                merchant_id = #{merchantId},
+            </if>
+            <if test="total != null">
+                total = #{total},
+            </if>
+            <if test="rufund != null">
+                rufund = #{rufund},
+            </if>
+            <if test="monthlyIncome != null">
+                monthly_income = #{monthlyIncome},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <update id="updateAccount">
+        UPDATE account SET total = #{total},monthly_income = #{monthlyIncome},daily_receipts = #{dailyReceipts},
+        annual_income = #{annualIncome},update_time = now() where merchant_id = #{merchantId} and `year` = #{year}
+        and `month` = #{month} and `day` = #{day}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from bookstore.account where id = #{id}
+    </delete>
+
+</mapper>

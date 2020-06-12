@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.book.store.mapper.CollectsMapper">
+
+    <resultMap type="com.book.store.entity.Collects" id="CollectsMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="productId" column="product_id" jdbcType="INTEGER"/>
+        <result property="tel" column="tel" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="CollectsMap">
+        select
+          id, product_id, tel, create_time
+        from bookstore.collects
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="CollectsMap">
+        select
+          id, product_id, tel, create_time
+        from bookstore.collects
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="CollectsMap">
+        select
+          id, product_id, tel, create_time
+        from bookstore.collects
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="productId != null">
+                and product_id = #{productId}
+            </if>
+            <if test="tel != null and tel != ''">
+                and tel = #{tel}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+        </where>
+    </select>
+    <select id="selectByTel" resultMap="CollectsMap">
+        SELECT id,product_id, tel, create_time FROM collects WHERE tel = #{tel}
+    </select>
+    <select id="checkByProductIdAndTel" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM collects WHERE product_id = #{productId} and tel = #{tel}
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into bookstore.collects(product_id, tel, create_time)
+        values (#{productId}, #{tel}, now())
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update bookstore.collects
+        <set>
+            <if test="productId != null">
+                product_id = #{productId},
+            </if>
+            <if test="tel != null and tel != ''">
+                tel = #{tel},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from collects where id = #{id}
+    </delete>
+
+</mapper>
